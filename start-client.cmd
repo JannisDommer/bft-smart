@@ -1,0 +1,1 @@
+java -Djava.security.properties="./config/java.security" -Dlogback.configurationFile="./config/logback.xml" -cp "build/libs/BFT-SMaRt.jar" bftsmart.demo.counter.CounterClient 1001 1 %1
