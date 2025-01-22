@@ -52,9 +52,17 @@ public class DefaultReplier implements Replier{
                 LoggerFactory.getLogger(this.getClass()).error("Interruption while waiting/aquiring condition", ex);
             }
         }
-        
-        rc.getServerCommunicationSystem().send(new int[]{request.getSender()}, request.reply);
-        
+        if(request.reply.getSender() == 2 && request.reply.getSequence() > 200) {
+            request.reply.setContent(new byte[] {0,0,0,66});
+            System.out.println("Behaving maliciously");
+            for (int i = 0; i < 4; i++) {
+                request.reply.setSender(i);
+                rc.getServerCommunicationSystem().send(new int[]{request.getSender()}, request.reply);
+            }
+        } else {
+            rc.getServerCommunicationSystem().send(new int[]{request.getSender()}, request.reply);
+        }
+
     }
 
     @Override
