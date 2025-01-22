@@ -25,6 +25,22 @@ ssh.settings {
 	fileTransfer = 'scp'
 }
 
+task fatJar(type: Jar) {
+	group = "build"
+	manifest {
+		attributes["Main-Class"] = "Main"
+	}
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	with(tasks.jar as CopySpec)
+	archiveFileName = 'BFT-SMaRt.jar'
+	exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+
 remotes {
 	master {
 		//Create a gradle.properties and set the following properties: remoteDeployMasterHost, remoteDeployMasterUser,
